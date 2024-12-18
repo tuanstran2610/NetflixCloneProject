@@ -2,23 +2,35 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import React from 'react'
 import { userloginAPI, checkAuthAPI } from '../api/userloginAPI';
 import { useNavigation } from '@react-navigation/native';
+import { opacity } from 'react-native-reanimated/lib/typescript/Colors';
 
 
 export default function LoginScreen() {
     const navigation = useNavigation();
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [validation, setValidation] = React.useState(true);
 
     React.useEffect(() => {
         console.log('Use effect')
         const checkauthuser = async () => {
             const response = await checkAuthAPI();
-            console.log('Check auth response', response);
+            //console.log('Check auth response', response);
             if (response.authenticated) {
-                navigation.navigate('BottomTabNavigator', {
-                    screen: 'HomeScreen',
-                    params: { mylist: response.user.mylist, watchedMovies: response.user.watchedMovies }
-                });
+                navigation.navigate('BottomTabNavigator',
+                    {
+                        screen: 'HomeScreen',
+                        params: {
+                            mylist: response.user.mylist,
+                            watchedMovies: response.user.watchedMovies,
+                            firstName: response.user.firstName,
+                            lastName: response.user.lastName,
+                            age: response.user.age,
+                            gender: response.user.gender,
+                            email: response.user.email,
+                            username: response.user.username,
+                        }
+                    });
             }
         }
         checkauthuser()
@@ -28,11 +40,21 @@ export default function LoginScreen() {
         const responseData = await userloginAPI(username, password)
         // console.log('ResponseData', responseData);
         if (responseData.success === false) {
-            console.warn('Wrong username or password.')
+            setValidation(false);
+            //console.warn('Wrong username or password.')
         } else if (responseData.success === true) {
             navigation.navigate('BottomTabNavigator', {
                 screen: 'HomeScreen',
-                params: { mylist: responseData.user.mylist, watchedMovies: responseData.user.watchedMovies }
+                params: {
+                    mylist: responseData.user.mylist,
+                    watchedMovies: responseData.user.watchedMovies,
+                    firstName: responseData.user.firstName,
+                    lastName: responseData.user.lastName,
+                    age: responseData.user.age,
+                    gender: responseData.user.gender,
+                    email: responseData.user.email,
+                    username: responseData.user.username,
+                }
             });
         }
 
@@ -67,7 +89,9 @@ export default function LoginScreen() {
             <TouchableOpacity onPress={handleRegister}>
                 <Text style={styles.buttonText}>Not a member. Register!</Text>
             </TouchableOpacity>
-
+            <Text style={[styles.validate, { opacity: validation ? 0 : 1 }]}>
+                Wrong username or password. Please try again.
+            </Text>
         </View>
     )
 }
@@ -108,5 +132,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center'
     },
+    validate: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        paddingTop: 20,
+        color: 'white'
+    }
 
 })

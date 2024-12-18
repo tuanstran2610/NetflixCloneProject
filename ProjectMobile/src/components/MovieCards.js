@@ -20,7 +20,7 @@ export default function MovieCards({ genreID, label }) {
         fetchMovies();
     }, [genreID]);
 
-    console.log(`Movies from the genre ${genreID} is ${moviesList}`);
+    //console.log(`Movies from the genre ${genreID} is ${moviesList}`);
 
     const renderMovieCards = ({ item }) => (
         <TouchableOpacity onPress={() => handleMovieDetails(item)} style={styles.movieCardContainer}>

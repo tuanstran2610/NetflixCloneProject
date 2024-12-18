@@ -9,11 +9,14 @@ import { useNavigation } from '@react-navigation/native'
 
 
 export default function HomeScreen({ route }) {
+
+
   const navigation = useNavigation();
   const [moviesList, setMoviesList] = React.useState([]);
   const [mylist, setMylist] = React.useState(route.params.mylist)
   const [watchedMovies, setWatchedMovies] = React.useState(route.params.watchedMovies);
 
+  console.log("HomeScreene: ", route);
 
   React.useEffect(() => {
     const moviesListAPICall = async () => {
@@ -41,8 +44,8 @@ export default function HomeScreen({ route }) {
   }, [route.params.mylist]);
 
   //console.log('Movie list', movieList)
-  console.log('My list', mylist)
-  console.log('Watched movies', watchedMovies)
+  //console.log('My list', mylist)
+  //console.log('Watched movies', watchedMovies)
 
   const handleBanner = (movie) => {
     console.log('Handle banner', movie);

@@ -14,13 +14,16 @@ export default function RegisterScreen() {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [validation, setValidation] = React.useState(true);
+
 
 
     const handleRegister = async () => {
         const responseData = await userRegisterAPI(firstName, lastName, age, gender, email, username, password);
 
         if (responseData.success === false) {
-            console.warn("Username and password already exists!");
+            setValidation(false);
+
         } else if (responseData.success === true) {
             navigation.navigate('LoginScreen');
         }
@@ -102,6 +105,9 @@ export default function RegisterScreen() {
             <TouchableOpacity onPress={handleLogin}>
                 <Text style={styles.buttonText}>Already a member. Login!</Text>
             </TouchableOpacity>
+            <Text style={[styles.validate, { opacity: validation ? 0 : 1 }]}>
+                Username and password already exists!
+            </Text>
         </View>
     )
 }
@@ -178,4 +184,10 @@ const styles = StyleSheet.create({
     radioButtonText: {
         color: 'white',
     },
+    validate: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        paddingTop: 20,
+        color: 'white'
+    }
 });

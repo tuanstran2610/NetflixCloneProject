@@ -1,13 +1,17 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { userLogoutAPI } from '../api/logoutAPI';
 import { useNavigation } from '@react-navigation/native';
 
 
 
-const SettingsScreen = () => {
+
+const SettingsScreen = ({ route }) => {
+
+  console.log('setting', route);
   const navigation = useNavigation();
 
   const handleLogout = async () => {
@@ -24,6 +28,18 @@ const SettingsScreen = () => {
     }
   };
 
+  const profileNavigation = () => {
+    //console.log("passing to pro", route)
+    navigation.navigate('ProfileDetail', route.params);
+  }
+
+  const policyNavigation = () => {
+    navigation.navigate('PolicyScreen');
+  }
+
+  const notiNavigation = () => {
+    navigation.navigate('NotificationScreens');
+  }
 
   return (
     <View style={styles.container}>
@@ -36,19 +52,26 @@ const SettingsScreen = () => {
       </View>
 
       <View style={styles.profileSection}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <AntDesign name='profile' size={20} color='#888' />
-          <Text style={styles.profileName}>Profile</Text>
-        </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={profileNavigation}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <AntDesign name='profile' size={20} color='#888' />
+            <Text style={styles.profileName}>Profile</Text>
+          </View>
           <Text style={{ fontSize: 14, color: '#808080' }}>Manage Profiles</Text>
         </TouchableOpacity>
       </View>
 
       <View style={{ marginTop: 30, paddingHorizontal: 20 }}>
-        <TouchableOpacity style={styles.listItem} >
+        <TouchableOpacity style={styles.listItem} onPress={policyNavigation}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <IonIcon name='notifications' size={20} color='#888' />
+            <MaterialIcons name='policy' size={20} color='#888' />
+            <Text style={styles.listItemText}>Terms and Policies</Text>
+          </View>
+          <IonIcon name='arrow-back' size={20} color='#888' />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.listItem} onPress={notiNavigation}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <MaterialIcons name='policy' size={20} color='#888' />
             <Text style={styles.listItemText}>Notifications</Text>
           </View>
           <IonIcon name='arrow-back' size={20} color='#888' />
